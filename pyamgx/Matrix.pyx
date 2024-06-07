@@ -92,7 +92,7 @@ cdef class Matrix:
         cdef uintptr_t col_indices_ptr = ptr_from_array_interface(
             col_indices, "int32"
         )
-        cdef uintptr_t data_ptr = ptr_from_array_interface(data, "float64")
+        cdef uintptr_t data_ptr = ptr_from_array_interface(data, "float32")
 
         check_error(AMGX_matrix_upload_all(
             self.mtx,
@@ -129,7 +129,7 @@ cdef class Matrix:
             # assume matrix of zeros
             col_indices = col_indices.__class__((1,), dtype=np.int32)
             col_indices.fill(ncols-1)
-            data = data.__class__((1,), dtype=np.float64)
+            data = data.__class__((1,), dtype=np.float32)
             data.fill(0)
 
         self.upload(row_ptrs, col_indices, data, shape=[nrows, ncols])
@@ -183,7 +183,7 @@ cdef class Matrix:
             Array of matrix data.
         """
         cdef int n, nnz
-        cdef uintptr_t data_ptr = ptr_from_array_interface(data, check_for_dtype="float64")
+        cdef uintptr_t data_ptr = ptr_from_array_interface(data, check_for_dtype="float32")
         
         size, (bx, by) = self.get_size()
         n = self.get_size()[0]

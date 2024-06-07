@@ -70,7 +70,7 @@ cdef class Vector:
         else:
             n = data.size/block_dim
 
-        cdef uintptr_t ptr = ptr_from_array_interface(data, "float64")
+        cdef uintptr_t ptr = ptr_from_array_interface(data, "float32")
         self.upload_raw(ptr, n, block_dim)
 
         return self
@@ -99,7 +99,7 @@ cdef class Vector:
 
         return self
 
-    def download(self, double[:] data=None):
+    def download(self, float[:] data=None):
         """
         v.download(data)
 
@@ -112,7 +112,7 @@ cdef class Vector:
         """
         if data is None:
             n = self.get_size()[0]
-            data = np.zeros(n, dtype=np.float64)
+            data = np.zeros(n, dtype=np.float32)
 
         self.download_raw(<uintptr_t> &data[0])
         return np.asarray(data)

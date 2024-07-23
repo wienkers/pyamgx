@@ -21,6 +21,30 @@ cdef class Resources:
         """
         check_error(AMGX_resources_create_simple(&self.rsrc, cfg.cfg))
         return self
+    
+    def create_parallel(self, Config cfg, device_num):
+        """
+        AFW 2024
+        AMGX_resources_create
+
+        Create the underlying AMGX Resources object in a
+        single-threaded application on _multiple GPU_
+
+        Parameters
+        ----------
+        cfg : Config
+
+        Returns
+        -------
+        self : Resources
+        """
+        # Use NULL comm
+        cdef uintptr_t devices = ptr_from_array_interface(
+            np.array([device_num], dtype=np.int32), "int32"
+        )
+        
+        check_error(AMGX_resources_create(&self.rsrc, cfg.cfg, NULL,  1, <const int*> devices))
+        return self
 
     def destroy(self):
         """

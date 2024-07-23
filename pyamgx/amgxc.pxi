@@ -82,6 +82,12 @@ cdef extern from "amgx_c.h":
     # Resources:
     AMGX_RC AMGX_resources_create_simple(
         AMGX_resources_handle *rsc, AMGX_config_handle cfg)
+    # AFW 2024
+    AMGX_RC AMGX_resources_create(
+        AMGX_resources_handle *rsc, AMGX_config_handle cfg,
+        void *comm,
+        int device_num,
+        const int *devices);
     AMGX_RC AMGX_resources_destroy(AMGX_resources_handle rsc)
 
     # Matrix:

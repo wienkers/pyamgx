@@ -39,11 +39,15 @@ cdef class Resources:
         self : Resources
         """
         # Use NULL comm
+        
+        device_nparray = np.array(device_num, dtype=np.int32);
         cdef uintptr_t devices = ptr_from_array_interface(
-            np.array([device_num], dtype=np.int32), "int32"
+            device_nparray, "int32"
         )
         
-        check_error(AMGX_resources_create(&self.rsrc, cfg.cfg, NULL,  1, <const int*> devices))
+        n_devices = device_nparray.size
+        
+        check_error(AMGX_resources_create(&self.rsrc, cfg.cfg, NULL,  n_devices, <const int*> devices))
         return self
 
     def destroy(self):

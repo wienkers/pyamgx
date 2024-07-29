@@ -135,6 +135,30 @@ cdef class Matrix:
         self.upload(row_ptrs, col_indices, data, shape=[nrows, ncols])
         return self
 
+    def upload_BSR_block(self, bsr, shape, block_dims):
+        """
+        M.upload_BSR_block(bsr,...
+
+        Copy data from a :class:`scipy.sparse.bsr_matrix` or CuPy sparse matrix
+        to the Matrix object.
+
+        Parameters
+        ----------
+        csr : scipy.sparse.bsr_matrix
+
+        Returns
+        -------
+        self : Matrix
+        """
+
+        row_ptrs = bsr.indptr
+        col_indices = bsr.indices
+        data = bsr.data
+
+        self.upload(row_ptrs, col_indices, data, shape=shape, block_dims=block_dims)
+        return self
+    
+
     def get_size(self):
         """
         M.get_size()
